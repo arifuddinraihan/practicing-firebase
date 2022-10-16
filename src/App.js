@@ -7,7 +7,7 @@ const auth = getAuth(app);
 
 function App() {
   const provider = new GoogleAuthProvider()
-  const [user , setUser] = useState({})
+  const [user, setUser] = useState({})
   const handleGoogleSign = () => {
     signInWithPopup(auth, provider)
       .then(result => {
@@ -21,18 +21,25 @@ function App() {
   console.log(user)
   const handleSignOut = () => {
     signOut(auth)
-      .then()
-      .catch()
+      .then(() => {
+        setUser({})
+      })
+      .catch(() => {
+        setUser({})
+      })
   }
   return (
     <div className="App">
-      <button onClick={handleGoogleSign}>Google Sing In</button>
-      <button onClick={handleSignOut}>Sing Out</button>
-      <div>
+      {user.email ?
+        <button onClick={handleSignOut}>Sing Out</button>
+        :
+        <button onClick={handleGoogleSign}>Google Sing In</button>
+      }
+      {user.email && <div>
         <h3>User : {user.displayName}</h3>
         <p>Email : {user.email}</p>
         <img src={user.photoURL}></img>
-      </div>
+      </div>}
     </div>
   );
 }
